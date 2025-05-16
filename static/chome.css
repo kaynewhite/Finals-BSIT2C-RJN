@@ -1,0 +1,199 @@
+/* Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Make sure the main content fits nicely after header/sidebar */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #F8F8F8;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+.main-content {
+  /* Remove extra top padding - header is fixed */
+  padding: 2rem 2rem 3rem 2rem;
+  /* margin-left: 50px; */
+  min-height: calc(100vh - 70px); /* full height minus header */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(100% - 200px);
+  box-sizing: border-box;
+}
+
+.section-title {
+  font-size: 2rem;
+  color: #333;
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  width: 100%;
+  max-width: 1100px;
+}
+
+.status-banner {
+  width: 100%;
+  max-width: 1100px;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.premium-status {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.premium-status a {
+  color: #2e5f45;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.premium-status a:hover {
+  text-decoration: underline;
+}
+
+.content {
+  width: 100%;
+  max-width: 1100px;
+  display: block;
+}
+
+/* Cards grid */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  width: 100%;
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .cards {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+  .card img, .cardLocked img {
+    height: 160px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .cards {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 28px;
+  }
+  .card img, .cardLocked img {
+    height: 260px;
+  }
+}
+
+/* Card styles (unchanged except minor adjustments) */
+.card, .cardLocked {
+  background-color: #fff;
+  border-radius: 2.5rem;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, opacity 0.5s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 320px;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.card img, .cardLocked img {
+  width: 100%;
+  object-fit: cover;
+  border-top-left-radius: 2.5rem;
+  border-top-right-radius: 2.5rem;
+  transition: transform 0.3s ease;
+  height: 200px; /* default */
+}
+
+.card:hover img, .cardLocked:hover img {
+  transform: scale(1.07);
+}
+
+.card-info {
+  padding: 2rem;
+  background-color: #fff;
+  border-bottom-left-radius: 2.5rem;
+  border-bottom-right-radius: 2.5rem;
+  flex: 1;
+}
+
+.card-info strong {
+  font-size: 1.5rem;
+  display: block;
+  margin-bottom: 0.7rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.card-info small {
+  color: #777;
+  font-size: 1.1rem;
+  font-style: italic;
+}
+
+/* Fade in animation */
+.card.fade-in, .cardLocked.fade-in {
+  opacity: 1;
+  animation: fadeIn 0.5s ease-in-out forwards;
+  transform: translateY(0);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Bottom button */
+.bottom-buttons {
+  background-color: rgba(0, 255, 119, 0.7);
+  border-radius: 10px;
+  padding: 1rem 1.5rem;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  cursor: pointer;
+  animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+.premium-star {
+  font-size: 2rem;
+  color: white;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.premium-star:hover {
+  transform: scale(1.1);
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  }
+}

@@ -1,0 +1,161 @@
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(to bottom, #f0f0f0, #e0e0e0);
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding: 120px 60px 40px 60px;
+  box-sizing: border-box;
+}
+
+header {
+  background-color: #1B3B29;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  width: 100%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+
+.container {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  width: 335px;
+}
+
+.login-form, .create-account {
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"],
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+input:focus {
+  border-color: #347156;
+  outline: none;
+}
+
+button {
+  background-color: #347156;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #2a5a45;
+}
+
+.forgot-password {
+  display: block;
+  text-align: right;
+  margin-top: 5px;
+  color: #347156;
+  text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  body {
+    justify-content: center;
+    padding: 100px 20px 20px 20px;
+  }
+}
+
+.flash-messages {
+  margin: 1rem auto;
+  max-width: 600px;
+  padding: 0 1rem;
+}
+
+.flash {
+  padding: 1rem;
+  border-radius: 6px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.flash.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.flash.danger, .flash.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.flash.warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.flash.info {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.create-account {
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.create-account button {
+  background-color: #347156;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.create-account button:hover {
+  background-color: #2a5a45;
+}
+
+.create-account a {
+  color: #347156;
+  text-decoration: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: text-decoration 0.3s ease;
+}
+
+.create-account a:hover {
+  text-decoration: underline;
+}

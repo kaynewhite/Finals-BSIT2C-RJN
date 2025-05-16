@@ -1,0 +1,239 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+  color: #a2a5b3;
+  background: #0b0d15;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100vh;
+}
+
+header {
+  background-color: #1B3B29;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1030;
+  font-size: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.logo {
+  font-weight: 900;
+  font-size: 1.8rem;
+  color: white;
+  user-select: none;
+}
+
+.search-bar input[type="text"] {
+  padding: 0.7rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px 0 0 5px;
+  flex-grow: 1;
+  margin-right: 0.5rem;
+}
+
+.search-bar button[type="submit"] {
+  padding: 0.7rem 1rem;
+  background-color: #2e5f45;
+  color: white;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+}
+
+.auth-buttons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.button-link {
+  text-decoration: none;
+  color: white;
+  padding: 0.7rem 1.2rem;
+  border: 1px solid white;
+  border-radius: 5px;
+  font-size: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  font-weight: bold;
+}
+
+.button-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar {
+  background-color: #2E5F45;
+  border-radius: 0 10px 10px 0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+  width: 200px;
+  height: calc(100vh - 70px);
+  position: fixed;
+  top: 70px;
+  left: 0;
+  overflow-y: auto;
+  z-index: 1020;
+  padding: 1rem;
+}
+
+.sidebar .nav-link {
+  position: relative;
+  color: white;
+  border-radius: 10px;
+  font-weight: 500;
+  padding: 10px 0;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  width: 100%;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.sidebar .nav-link.active {
+  background-color: #1B3B29 !important;
+  color: white !important;
+  font-weight: 600;
+}
+
+.sidebar .nav-link.active::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(90deg, #A5C6A0, #2E5F45, #1B3B29, #A5C6A0);
+  background-size: 300% 300%;
+  z-index: -1;
+  border-radius: 12px;
+  animation: borderFlow 4s linear infinite;
+}
+
+@keyframes borderFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.sidebar .nav-link:hover:not(.active) {
+  background-color: #A5C6A0;
+  color: #1B3B29;
+}
+
+.content {
+  margin-left: 200px;
+  margin-top: 70px;
+  padding: 2rem;
+  min-height: calc(100vh - 70px);
+  overflow-x: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: center;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  width: 90%;
+  margin: 30px auto;
+}
+
+@media (max-width: 768px) {
+  .cards {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  .card img {
+    height: 150px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .cards {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+  }
+  .card img {
+    height: 250px;
+  }
+}
+
+.card, .cardLocked {
+  background-color: #fff;
+  border-radius: 2.5rem;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease, opacity 0.5s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.flash-messages {
+  margin: 1rem auto;
+  width: 90%;
+  max-width: 600px;
+}
+
+.flash {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.flash.success {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.flash.danger {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.flash.warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.flash.info {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.flash.error {
+  background-color: #f44336;
+  color: white;
+}
+
+.content-inner {
+  width: 100%;
+  max-width: 800px;
+}

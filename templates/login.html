@@ -1,0 +1,50 @@
+{% extends "authbase.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="container">
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-messages">
+        {% for category, message in messages %}
+          <div class="flash {{ category }}">{{ message }}</div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <main>
+    <section class="login-form">
+      <h2>LALA MO</h2>
+      <form method="POST">
+        <div class="form-group">
+          <label for="emailOrUsername">Email or Username:</label>
+          <input type="text" name="emailOrUsername" id="emailOrUsername" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" name="password" id="password" required>
+        </div>
+        <a href="#" class="forgot-password">Forgot Password?</a>
+        <div class="form-group">
+          <label for="role">Sign in as:</label>
+          <select name="role" id="role">
+            <option value="admin">Admin</option>
+            <option value="staff">Staff</option>
+            <option value="customer">Customer</option>
+          </select>
+        </div>
+        <section class="create-account">
+          <button type="submit">Sign In</button>
+          <a href="{{ url_for('sign_up') }}" class="button-link">Create Account</a>
+        </section>
+      </form>
+    </section>
+    
+  </main>
+</div>
+{% endblock %}

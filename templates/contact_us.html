@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='contact_us.css') }}">
+{% endblock %}
+{% block body %}
+
+<main class="contact-cont">
+  <h2> Contact Us </h2>
+  <p> If you have any feedback or concerns, feel free to contact us. </p>
+
+  <form method="POST" action="{{ url_for('contact_us') }}" class="contact-form">
+    <label for="name">Your name:</label>
+    <input type="text" name="name" id="name" required>
+
+    <label for="email">Your email:</label>
+    <input type="email" name="email" id="email" required>
+
+    <label for="subject">Subject:</label>
+    <input type="text" name="subject" id="subject" required>
+    
+    <label for="message">Your message:</label>
+    <textarea name="message" id="message" rows="5"required></textarea>
+
+    <button type="submit">Send Message</button>
+  </form>
+
+  <div class="social-contact">
+    <p>OR MESSAGE US HERE</p>
+    <div class="social-icons">
+      <a href="#" target="_blank">
+        <img src="{{ url_for('static', filename='pangfacebook') }}" alt="Facebook">
+      </a>
+      <a href="#" target="_blank">
+        <img src="{{ url_for('static', filename='pang-instagram') }}" alt="Instagram">
+      </a>
+      <a href="#" target="_blank">
+        <img src="{{ url_for('static', filename='pangtwitter') }}" alt="Twitter">
+      </a>
+      <a href="#" target="_blank">
+        <img src="{{ url_for('static', filename='pang-telegram') }}" alt="Telegram">
+      </a>
+    </div>
+  </div>
+  
+</main>
+{% endblock %}

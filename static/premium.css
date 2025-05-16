@@ -1,0 +1,105 @@
+/* .main-content {
+  margin-left: 200px;
+  padding: 3em 2em;
+  color: white;
+  text-align: center;
+} */
+
+.main-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1.5rem;
+  color: #A5C6A0;
+  text-shadow: 1px 1px 2px #000;
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.card {
+  background-color: #1b3b29;
+  border-radius: 20px;
+  padding: 2em;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease;
+  color: #f8f8f8;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
+}
+
+.card h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #A5C6A0;
+}
+
+.card p {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  color: #e0e0e0;
+}
+
+.card ul {
+  list-style-type: none;
+  padding: 0;
+  margin-bottom: 1.5rem;
+}
+
+.card ul li {
+  margin: 0.5em 0;
+  font-size: 1rem;
+  position: relative;
+  padding-left: 1.5em;
+}
+
+.card ul li::before {
+  content: "✔";
+  position: absolute;
+  left: 0;
+  color: #A5C6A0;
+  font-weight: bold;
+}
+
+.subscribe-btn {
+  background-color: #A5C6A0;
+  color: #1b3b29;
+  padding: 0.8em 2em;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.subscribe-btn:hover {
+  background-color: #c6e0ba;
+  transform: scale(1.05);
+}
+
+.flash.success {
+  background-color: #2e5f45;
+  color: #aef4b6;
+  padding: 1em;
+  margin: 1em auto;
+  max-width: 400px;
+  border-left: 5px solid #3ed17b;
+  border-radius: 5px;
+}
+
+.flash.warning {
+  background-color: #594a3d;
+  color: #ffd79c;
+  padding: 1em;
+  margin: 1em auto;
+  max-width: 400px;
+  border-left: 5px solid #ff9900;
+  border-radius: 5px;
+}

@@ -1,13 +1,69 @@
-{% inherit "base.html" %}
-
+{% extends 'base.html' %}
 {% block head %}
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<header>
-  <h1> RecipeHub </h1>
-</header>
-
-{% end block %}
-
+<link rel="stylesheet" href="{{ url_for('static', filename='chome.css') }}">
+{% endblock %}
 {% block body %}
-<h1>Hello TyRon</h1>
-{% end block %}
+<main class="main-content">
+  <h2 class="section-title">Recipes</h2>
+  <div class="status-banner">
+    {% if is_premium %}
+      <p class="premium-status">🌟 You are a Premium Member</p>
+    {% else %}
+      <p class="premium-status">👤 Standard Member — <a href="{{ url_for('premium') }}">Upgrade</a></p>
+    {% endif %}
+  </div>
+  <div class="content">
+    <div class="cards">
+      <div class="card">
+        <img src="{{ url_for('serve_image', filename='spagcarbo.jpg') }}" alt="Spaghetti">
+        <div class="card-info">
+          <strong>Spaghetti Carbonara</strong>
+          <small>Main Course</small>
+        </div>
+      </div>
+      <div class="card">
+        <img src="{{ url_for('serve_image', filename='chocolatecake.jpg') }}" alt="Chocolate Cake">
+        <div class="card-info">
+          <strong>Chocolate Cake</strong>
+          <small>Dessert</small>
+        </div>
+      </div>
+      <div class="card">
+        <img src="{{ url_for('serve_image', filename='caesarsalad.jpg') }}" alt="Caesar Salad">
+        <div class="card-info">
+          <strong>Caesar Salad</strong>
+          <small>Main Course</small>
+        </div>
+      </div>
+      <div class="card">
+        <img src="{{ url_for('serve_image', filename='appetizer.jpg') }}" alt="Appetizer">
+        <div class="card-info">
+          <strong>Appetizer</strong>
+          <small>Snack</small>
+        </div>
+      </div>
+      <div class="cardLocked">
+        <img src="{{ url_for('serve_image', filename='guacamole.jpg') }}" alt="Guacamole">
+        <div class="card-info">
+          <strong>Guacamole</strong>
+          <small><span class="locked-icon">🔒</span> Locked</small>
+        </div>
+      </div>
+    </div>
+    <div class="bottom-buttons">
+      <button class="premium-star">⭐</button>
+    </div>
+  </div>
+</main>
+
+<script>
+  window.addEventListener('load', () => {
+    const cards = document.querySelectorAll('.card, .cardLocked');
+    cards.forEach((card, index) => {
+      setTimeout(() => {
+        card.classList.add('fade-in');
+      }, index * 150);
+    });
+  });
+</script>
+{% endblock %}

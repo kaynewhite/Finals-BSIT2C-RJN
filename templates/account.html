@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='account.css') }}">
+{% endblock %}
+{% block body %}
+<main class="main-content">
+
+  <!-- HI-->
+  <!--  NATAPOS DIN SA CUSTOMER -->
+  <h2>Account Settings</h2>
+  <form method="POST" class="account-form">
+    <label for="name">Full Name:</label>
+    <input type="text" name="name" id="name" value="{{ user[0] }}" required>
+
+    <label for="username">Username:</label>
+    <input type="text" name="username" id="username" value="{{ user[1] }}" required>
+
+    <label for="current_password">Current Password:</label>
+    <input type="password" name="current_password" id="current_password" required>
+
+    <label for="new_password">New Password:</label>
+    <input type="password" name="new_password" id="new_password">
+
+    <label for="confirm_password">Confirm New Password:</label>
+    <input type="password" name="confirm_password" id="confirm_password">
+
+    <button type="submit">Update Account</button>
+  </form>
+</main>
+{% endblock %}
