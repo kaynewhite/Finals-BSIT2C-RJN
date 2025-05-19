@@ -1,7 +1,12 @@
-.main-content{
-  margin-left: 300px;
+body {
+  background-color: #ffffff;
+  font-family: Arial, sans-serif;
+}
+
+.main-content {
+  margin-right: 300px;
   padding: 3em 2em;
-  color: white;
+  color: #155724;
   text-align: center;
 }
 
@@ -10,33 +15,84 @@ body::-webkit-scrollbar {
 }
 
 .account-form {
-  max-width: 500px;
+  max-width: 600px;
   margin: 2rem auto;
   display: flex;
   flex-direction: column;
 }
 
+.section {
+  background-color: #A5C6A0;
+  padding: 1.5em;
+  border-radius: 8px;
+  margin-bottom: 1.5em;
+  cursor: pointer; 
+  transition: background-color 0.3s;
+}
+
+.section-header {
+  font-size: 1.25rem;
+  margin-bottom: 1em;
+  color: #333;
+  text-align: left;
+  font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.section-header.active {
+  background-color: #1B3B29; 
+  color: white; 
+}
+
+.collapse-icon {
+  font-size: 1.5rem;
+  transition: transform 0.3s;
+}
+
+.section-content {
+  display: none; 
+  padding-top: 10px;
+}
+
 .account-form label {
   margin-top: 10px;
   font-weight: bold;
+  color: #333;
 }
 
 .account-form input {
   padding: 10px;
   font-size: 1rem;
   margin-top: 5px;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
 .account-form button {
   margin-top: 20px;
   padding: 10px;
-  background-color: #3498db;
+  background-color: #1B3B29;
   color: white;
   border: none;
   cursor: pointer;
   font-weight: bold;
+  border-radius: 5px;
 }
 
 .account-form button:hover {
-  background-color: #2980b9;
+  background-color: #2E5F45;
+}
+
+.account-form input[type="password"], 
+.account-form input[type="text"], 
+.account-form input[type="email"] {
+  width: 100%;
+}
+
+.account-form button:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
 }

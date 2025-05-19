@@ -1,0 +1,21 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}View Recipe{% endblock %}
+
+{% block body %}
+<div class="container">
+    <h1>{{ recipe.title }}</h1>
+    <p><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
+    <p><strong>Instructions:</strong> {{ recipe.instructions }}</p>
+    <p><strong>Duration:</strong> {{ recipe.duration }} minutes</p>
+    <p><strong>Premium:</strong> {{ 'Yes' if recipe.isPremium else 'No' }}</p>
+    <p><strong>Staff ID:</strong> {{ recipe.staff_id }}</p>
+    <p><strong>Submitted On:</strong> {{ recipe.createdAt }}</p>
+
+    {% if recipe.image %}
+        <img src="{{ url_for('serve_image', filename=recipe.image) }}" class="img-fluid mt-3" alt="Recipe Image">
+    {% endif %}
+
+    <a href="{{ url_for('admin_view_status', status='pending') }}" class="btn btn-secondary mt-3">Back</a>
+</div>
+{% endblock %}

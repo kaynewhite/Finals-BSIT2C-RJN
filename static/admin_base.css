@@ -1,0 +1,235 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+  color: #0000;
+  background: #ffff;
+  overflow-x: hidden;
+}
+/* kamusta pre  */
+#darkModeToggle{
+  margin-left:5px;
+}
+
+.dmLabel{
+  margin-left: 3px;
+}
+
+body {
+  min-height: 100vh;
+  color: #000;
+}
+
+/* Header */
+header {
+  background-color: #1B3B29;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1030;
+  font-size: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  gap: 1rem;
+}
+
+/* Logo */
+.logo {
+  font-weight: 900;
+  font-size: 1.8rem;
+  color: white;
+  user-select: none;
+}
+
+/* Search bar */
+.search-bar {
+  flex-grow: 1;
+  max-width: 500px;
+}
+
+.search-bar form {
+  display: flex;
+  width: 100%;
+}
+
+.search-bar input[type="text"] {
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 5px 0 0 5px;
+  flex-grow: 1;
+  font-size: 1rem;
+}
+
+.search-bar button[type="submit"] {
+  padding: 0.55rem 1rem;
+  background-color: #2e5f45;
+  color: white;
+  border: none;
+  border-radius: 0 5px 5px 0;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* Auth buttons */
+.auth-buttons {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.button-link {
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+/* Login: white border */
+.button-link[href*="login"] {
+  color: white;
+  border: 1px solid white;
+}
+
+.button-link[href*="login"]:hover {
+  text-decoration: none;
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Sign Up: green background */
+.button-link[href*="sign_up"] {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+}
+
+.button-link[href*="sign_up"]:hover {
+  background-color: #3e8e41;
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: #2E5F45;
+  border-radius: 0 10px 10px 0;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+  width: 200px;
+  height: calc(100vh - 50px);
+  position: fixed;
+  top: 60px;
+  left: 0;
+  overflow-y: auto;
+  z-index: 1020;
+  padding: 1rem;
+}
+
+.sidebar .nav-link {
+  position: relative;
+  color: white;
+  border-radius: 10px;
+  font-weight: 500;
+  padding: 10px 0;
+  text-align: center;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  width: 100%;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.sidebar .nav-link.active {
+  background-color: #1B3B29 !important;
+  color: white !important;
+  font-weight: 600;
+}
+
+.sidebar .nav-link.active::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(90deg, #A5C6A0, #2E5F45, #1B3B29, #A5C6A0);
+  background-size: 300% 300%;
+  z-index: -1;
+  border-radius: 12px;
+  animation: borderFlow 4s linear infinite;
+}
+
+@keyframes borderFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.sidebar .nav-link:hover:not(.active) {
+  background-color: #A5C6A0;
+  color: #1B3B29;
+}
+
+/* Dark mode blablabla */
+body.dark-mode {
+  background-color: #121212;
+  color: #e0e0e0;
+}
+
+/* Header */
+body.dark-mode header {
+  background-color: #1a1a1a;
+  color: #e0e0e0;
+}
+
+/* Sidebar */
+body.dark-mode .sidebar {
+  background-color: #1e1e1e;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.8);
+}
+
+body.dark-mode .sidebar .nav-link {
+  color: #e0e0e0;
+}
+
+body.dark-mode .sidebar .nav-link:hover:not(.active) {
+  background-color: #333;
+  color: #fff;
+}
+
+body.dark-mode .sidebar .nav-link.active {
+  background-color: #333 !important;
+  color: #fff !important;
+}
+
+/* Flash messages */
+body.dark-mode .alert {
+  background-color: #333;
+  color: #f8f9fa;
+  border-color: #555;
+}
+
+/* Search bar */
+body.dark-mode .search-bar input[type="text"] {
+  background-color: #2c2c2c;
+  color: #e0e0e0;
+  border: 1px solid #555;
+}
+
+body.dark-mode .search-bar button[type="submit"] {
+  background-color: #444;
+  color: #fff;
+}
+

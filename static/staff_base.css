@@ -10,18 +10,14 @@
 html, body {
   height: 100%;
   font-family: 'Poppins', sans-serif;
-  color: #000;
-  background: #fff;
+  color: black;
+  background-color: white;
   overflow-x: hidden;
 }
 
 body {
   min-height: 100vh;
 }
-
-/* .recipe-detail{
-  text-align: justify;
-} */
 
 /* Header */
 header {
@@ -49,33 +45,9 @@ header {
   user-select: none;
 }
 
-/* Search bar */
+/* Remove Search Bar */
 .search-bar {
-  flex-grow: 1;
-  max-width: 500px;
-}
-
-.search-bar form {
-  display: flex;
-  width: 100%;
-}
-
-.search-bar input[type="text"] {
-  padding: 0.55rem 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 5px 0 0 5px;
-  flex-grow: 1;
-  font-size: 1rem;
-}
-
-.search-bar button[type="submit"] {
-  padding: 0.55rem 1rem;
-  background-color: #2e5f45;
-  color: white;
-  border: none;
-  border-radius: 0 5px 5px 0;
-  font-size: 1rem;
-  cursor: pointer;
+  display: none;
 }
 
 /* Auth buttons */
@@ -201,7 +173,7 @@ header {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
-  width: 90%;
+  width: 40%;
   margin: 30px auto;
 }
 
@@ -233,6 +205,10 @@ header {
   position: relative;
   display: flex;
   flex-direction: column;
+}
+
+.btn{
+  background-color: #1B3B29;
 }
 
 /* Flash Messages */
@@ -274,7 +250,8 @@ header {
   background-color: #f44336;
   color: white;
 }
-creat
+
+/* Media Query for Smaller Screens */
 @media (max-width: 768px) {
   header {
     flex-direction: column;
@@ -282,11 +259,6 @@ creat
     gap: 0.75rem;
     padding: 1rem;
     font-size: 1.25rem;
-  }
-
-  .search-bar {
-    width: 100%;
-    max-width: 100%;
   }
 
   .auth-buttons {
@@ -311,187 +283,187 @@ creat
   }
 }
 
-/* Dark Mode Theme */
+/* Dark Mode Base */
 body.dark-mode {
-  background-color: #0b0d15;
-  color: #f1f1f1;
-}
-
-body.dark-mode header,
-body.dark-mode .sidebar,
-body.dark-mode .offcanvas {
   background-color: #121212;
-  color: white;
+  color: #e0e0e0;
 }
 
-body.dark-mode .nav-link {
-  color: white;
+/* Header */
+body.dark-mode header {
+  background-color: #1f1f1f;
+  color: #e0e0e0;
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.05);
 }
 
-body.dark-mode .nav-link.active,
-body.dark-mode .nav-link:hover {
-  background-color: #333;
+body.dark-mode .btn,
+body.dark-mode button.btn,
+body.dark-mode input.btn {
+  background-color: #1f1f1f !important;
+}
+
+body.dark-mode .btn{
+  background-color: #1f1f1f;
+}
+
+/* Auth buttons */
+body.dark-mode .button-link[href*="login"] {
+  color: #ffffff;
+  border: 1px solid #ffffff;
+}
+
+body.dark-mode .button-link[href*="login"]:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+body.dark-mode .button-link[href*="sign_up"] {
+  background-color: #4CAF50;
+  color: #ffffff;
+}
+
+body.dark-mode .button-link[href*="sign_up"]:hover {
+  background-color: #3e8e41;
+}
+
+/* Sidebar */
+body.dark-mode .sidebar {
+  background-color: #232323;
+  box-shadow: 2px 0 5px rgba(255, 255, 255, 0.05);
+}
+
+body.dark-mode .sidebar .nav-link {
+  color: #e0e0e0;
+}
+
+body.dark-mode .sidebar .nav-link.active {
+  background-color: #121212 !important;
+  color: #ffffff !important;
+}
+
+body.dark-mode .sidebar .nav-link:hover:not(.active) {
+  background-color: #333333;
   color: #a5c6a0;
+}
+
+/* Main Content */
+body.dark-mode .content {
+  background-color: #1a1a1a;
 }
 
 body.dark-mode .card,
 body.dark-mode .cardLocked {
-  background-color: #1e1e1e;
-  color: white;
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+  box-shadow: 0 6px 12px rgba(255, 255, 255, 0.05);
 }
 
-body.dark-mode .search-bar input[type="text"] {
-  background-color: #2c2c2c;
-  color: white;
-  border-color: #555;
+/* Flash Messages */
+body.dark-mode .flash.success {
+  background-color: #1e4620;
+  color: #a6f3a2;
 }
 
-body.dark-mode .search-bar input::placeholder{
-  color: #ffff;
+body.dark-mode .flash.danger {
+  background-color: #58151c;
+  color: #f8bcbc;
 }
 
-body.dark-mode .search-bar button[type="submit"] {
-  background-color: #4CAF50;
+body.dark-mode .flash.warning {
+  background-color: #665c1e;
+  color: #fff7c2;
 }
 
-.recipe-content h3 {
-  margin-top: 1.5rem;
-  font-size: 1.4rem;
-  color: #2E5F45;
+body.dark-mode .flash.info {
+  background-color: #0a3d62;
+  color: #b0d9ff;
 }
 
-.ingredient-list,
-.instruction-list {
-  margin-top: 0.5rem;
-  margin-left: 1.5rem;
-  padding-left: 1rem;
+body.dark-mode .flash.error {
+  background-color: #d32f2f;
+  color: #ffffff;
 }
 
-.ingredient-list li,
-.instruction-list li {
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
-  line-height: 1.5;
+/* Placeholder for Search Bar (if you re-enable it) */
+body.dark-mode ::placeholder {
+  color: #bbbbbb;
 }
 
-/* Dark Mode */
-body.dark-mode .ingredient-list li,
-body.dark-mode .instruction-list li {
-  color: #f1f1f1;
-}
-
-.recipe-container {
-  max-width: 800px;
-  margin: 0 auto;
+/* Form Styling */
+.recipe-form {
+  background-color: #ffffff;
   padding: 2rem;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  max-width: 700px;
+  margin: 0 auto;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
-.recipe-header img {
-  max-width: 100%;
-  height: auto;
-  border-radius: 1rem;
-  margin-top: 1rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+@media (min-width: 768px) {
+  .recipe-form {
+    transform: translateX(-180px);
+  }
 }
 
-/* Back Button */
-.back-button-container {
-  margin-bottom: 1.5rem;
-}
-
-.back-button {
-  display: inline-block;
-  color: #2E5F45;
-  background-color: #eaf5ee;
-  padding: 0.5rem 1rem;
+/* Input Fields */
+.recipe-form .form-control,
+.recipe-form .form-check-input {
   border-radius: 8px;
-  font-size: 0.95rem;
-  text-decoration: none;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s ease;
+}
+
+.recipe-form .form-control:focus {
+  border-color: #4CAF50;
+  box-shadow: 0 0 0 0.15rem rgba(76, 175, 80, 0.25);
+}
+
+/* Labels */
+.recipe-form .form-label {
   font-weight: 600;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.back-button:hover {
-  background-color: #d3ecd9;
-  transform: translateX(-3px);
-}
-
-/* Recipe Title */
-.recipe-header h2 {
-  font-size: 2rem;
-  color: #1B3B29;
-  margin-bottom: 1rem;
-}
-
-/* Recipe Meta */
-.recipe-meta {
-  margin-top: 1rem;
-  font-size: 1rem;
-  color: #555;
-}
-
-.recipe-meta p {
   margin-bottom: 0.5rem;
+  display: block;
 }
 
-/* Favorite Button */
-.favorite-form {
-  margin-top: 2rem;
-  text-align: center;
-}
-
-.favorite-btn {
-  padding: 0.75rem 1.25rem;
-  font-size: 1rem;
+/* Submit Button */
+.recipe-form button[type="submit"] {
+  width: 100%;
+  padding: 0.75rem;
+  border-radius: 8px;
   font-weight: bold;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  transition: background-color 0.3s ease, transform 0.2s;
 }
 
-.favorite-btn.add {
-  background-color: #4CAF50;
-  color: white;
-}
-
-.favorite-btn.add:hover {
+.recipe-form button[type="submit"]:hover {
   background-color: #3e8e41;
-  transform: scale(1.05);
+  transform: translateY(-2px);
 }
 
-.favorite-btn.remove {
-  background-color: #e74c3c;
-  color: white;
+/* Checkbox */
+.recipe-form .form-check-label {
+  margin-left: 0.5rem;
 }
 
-.favorite-btn.remove:hover {
-  background-color: #c0392b;
-  transform: scale(1.05);
+/* Dark Mode Support */
+body.dark-mode .recipe-form {
+  background-color: #1f1f1f;
+  border: 1px solid #444;
+  box-shadow: 0 4px 10px rgba(255, 255, 255, 0.05);
 }
 
-/* Dark Mode Adjustments */
-body.dark-mode .back-button {
-  color: #a5c6a0;
-  background-color: #1b1f24;
+body.dark-mode .recipe-form .form-control,
+body.dark-mode .recipe-form .form-check-input {
+  background-color: #2a2a2a;
+  color: #e0e0e0;
+  border: 1px solid #555;
 }
 
-body.dark-mode .back-button:hover {
-  background-color: #2e5f45;
+body.dark-mode .recipe-form .form-control:focus {
+  border-color: #81c784;
+  box-shadow: 0 0 0 0.15rem rgba(129, 199, 132, 0.25);
 }
 
-body.dark-mode .recipe-header h2 {
-  color: #a5c6a0;
-}
-
-body.dark-mode .recipe-meta {
-  color: #cccccc;
-}
-
-body.dark-mode .favorite-btn.add {
-  background-color: #2e7d32;
-}
-
-body.dark-mode .favorite-btn.remove {
-  background-color: #c0392b;
+body.dark-mode .recipe-form .form-label {
+  color: #e0e0e0;
 }

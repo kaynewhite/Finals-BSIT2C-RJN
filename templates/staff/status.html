@@ -1,0 +1,42 @@
+{% extends "staff/staff_base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='status.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+  <h2 class="mb-4 text-capitalize">{{ status }} Recipes</h2>
+
+  {% if recipes %}
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th>Title</th>
+          <th>Duration (mins)</th>
+          <th>Premium</th>
+          <th>Date Submitted</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for recipe in recipes %}
+        <tr>
+          <td>{{ recipe.title }}</td>
+          <td>{{ recipe.duration }}</td>
+          <td>{{ 'Yes' if recipe.isPremium else 'No' }}</td>
+          <td>{{ recipe.createdAt }}</td>
+          <td>
+            <a href="{{ url_for('view_staff_recipe', recipe_id=recipe.id) }}" class="btn btn-primary btn-sm">View</a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+    <p>No {{ status }} recipes available.</p>
+  {% endif %}
+</div>
+{% endblock %}

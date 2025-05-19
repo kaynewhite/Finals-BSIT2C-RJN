@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>RecipeHub Staff</title>
+  <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico" />
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='staff_base.css') }}" />
+  {% block head %}{% endblock %}
+</head>
+<body>
+
+  <!-- Mobile Sidebar Toggle -->
+  <button class="btn btn-outline-light d-md-none m-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileSidebar" aria-controls="mobileSidebar">
+    ☰
+  </button>
+
+  <!-- Offcanvas Sidebar for Mobile -->
+  <div class="offcanvas offcanvas-start text-bg-dark d-md-none" tabindex="-1" id="mobileSidebar" aria-labelledby="mobileSidebarLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="mobileSidebarLabel">Staff Menu</h5>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item">
+          <a href="{{ url_for('add_recipe') }}" class="nav-link {% if request.endpoint == 'add_recipe' %}active{% endif %}">Add Recipes</a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ url_for('view_status', status='approved') }}" class="nav-link {% if request.view_args.get('status') == 'approved' %}active{% endif %}">Approved</a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ url_for('view_status', status='pending') }}" class="nav-link {% if request.view_args.get('status') == 'pending' %}active{% endif %}">Pending</a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ url_for('view_status', status='rejected') }}" class="nav-link {% if request.view_args.get('status') == 'rejected' %}active{% endif %}">Rejected</a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ url_for('logout') }}" class="nav-link">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Sidebar for Desktop -->
+  <nav id="sidebarMenu" class="sidebar d-none d-md-flex flex-column flex-shrink-0 p-3 text-white">
+    <ul class="nav nav-pills flex-column mb-auto">
+      <li class="nav-item">
+        <a href="{{ url_for('add_recipe') }}" class="nav-link {% if request.endpoint == 'add_recipe' %}active{% endif %}">Add Recipes</a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ url_for('view_status', status='approved') }}" class="nav-link {% if request.view_args.get('status') == 'approved' %}active{% endif %}">Approved</a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ url_for('view_status', status='pending') }}" class="nav-link {% if request.view_args.get('status') == 'pending' %}active{% endif %}">Pending</a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ url_for('view_status', status='rejected') }}" class="nav-link {% if request.view_args.get('status') == 'rejected' %}active{% endif %}">Rejected</a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ url_for('logout') }}" class="nav-link">Logout</a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Header -->
+  <header class="flex-wrap flex-md-nowrap">
+    <span class="logo">RecipeHub</span>
+    <div class="auth-buttons ms-auto">
+      {% if session['username'] %}
+        <span>Welcome Staff {{ session['name'] }}!</span>
+      {% else %}
+        <a href="{{ url_for('login') }}" class="button-link">Login</a>
+      {% endif %}
+    </div>
+    <button id="darkModeToggle" class="btn btn-sm btn-light">🌙</button>
+  </header>
+
+  <!-- Main Content -->
+  <main class="content">
+    <div class="content-inner">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          <div class="flash-messages">
+            {% for category, message in messages %}
+              <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% endwith %}
+      {% block body %}{% endblock %}
+    </div>
+  </main>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const body = document.body;
+      const toggle = document.getElementById('darkModeToggle');
+
+      // Load dark mode preference
+      if (localStorage.getItem('darkMode') === 'enabled') {
+        body.classList.add('dark-mode');
+        toggle.textContent = '☀️';
+      }
+
+      toggle.addEventListener('click', () => {
+        body.classList.toggle('dark-mode');
+        const enabled = body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode', enabled ? 'enabled' : 'disabled');
+        toggle.textContent = enabled ? '☀️' : '🌙';
+      });
+    });
+  </script>
+
+</body>
+</html>

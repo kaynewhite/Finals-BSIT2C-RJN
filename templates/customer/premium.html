@@ -1,0 +1,36 @@
+{% extends 'customer/base.html' %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='premium.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="main-content">
+  <h1>Lifetime Premium Access</h1>
+  
+  {% if subscribed == 1 %}
+    <div class="cards">
+      <div class="card">
+        <h2>You're Already a Premium Member!</h2>
+        <p>Enjoy unlimited recipe access and unlocked locked recipes.</p>
+        <button class="subscribe-btn disabled" disabled>Already Subscribed</button>
+      </div>
+    </div>
+  {% else %}
+    <div class="cards">
+      <div class="card">
+        <h2>One-Time Payment</h2>
+        <p>₱12 for lifetime access</p>
+        <ul>
+          <li>Unlimited recipe access</li>
+          <li>Unlocked locked recipes</li>
+        </ul>
+        <form method="POST" onsubmit="return confirm('Are you sure you want to subscribe to Premium for ₱12? This is a one-time payment.')">
+          <button class="subscribe-btn" type="submit">Get Lifetime Premium</button>
+        </form>
+      </div>
+    </div>
+  {% endif %}
+  
+</div>
+{% endblock %}

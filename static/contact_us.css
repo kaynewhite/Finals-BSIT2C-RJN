@@ -1,16 +1,21 @@
-.contact-container{
+body{
+  background-color: #ffff;
+  color: #2e5f45;
+  
+}
+
+.contact-cont{
   max-width: 600px;
-  margin: 2rem auto;
-  padding: 2rem;
-  background: #fefefe;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  margin: 2rem 5rm;
+  padding: 0rem;
+  background: #ffff;
+  box-shadow: 0 0 1px rgba(0,0,0,0.1);
   border-radius: 8px;
 }
 
-.contact-container h2{
+.contact-cont h2{
   text-align: center;
   margin-bottom: 1rem;
-  color: #333;
 }
 
 .contact-form {
@@ -21,7 +26,6 @@
 .contact-form label {
   margin-top: 1rem;
   font-weight: bold;
-  color: #555;
 }
 
 .contact-form input, .contact-form textarea{
@@ -87,7 +91,36 @@
 
 
 @media (max-width: 600px){
-  .contact-container{
+  .contact-cont{
     padding: 1rem;
   }
+}
+
+body.dark-mode {
+  background-color: #0b0d15;
+  color: #dcdcdc;
+}
+
+body.dark-mode .contact-cont {
+  background-color: #0b0d15;
+  /* box-shadow: 0 0 8px rgba(255, 255, 255, 0.05); */
+}
+/* pre check pm */
+body.dark-mode .contact-form input,
+body.dark-mode .contact-form textarea {
+  background-color: #2b2b2b;
+  color: #f0f0f0;
+  border-color: #555;
+}
+
+body.dark-mode .contact-form button {
+  background-color: #007acc;
+}
+
+body.dark-mode .contact-form button:hover {
+  background-color: #005ea1;
+}
+
+body.dark-mode .social-contact p {
+  color: #cccccc;
 }

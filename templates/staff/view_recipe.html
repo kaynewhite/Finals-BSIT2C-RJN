@@ -1,0 +1,26 @@
+{% extends "staff/staff_base.html" %}
+
+{% block title %}View Recipe{% endblock %}
+
+{% block body %}
+<div class="container">
+  <h2 class="mb-4">{{ recipe.title }}</h2>
+
+  <ul class="list-group">
+    <li class="list-group-item"><strong>Duration:</strong> {{ recipe.duration }} mins</li>
+    <li class="list-group-item"><strong>Premium:</strong> {{ 'Yes' if recipe.isPremium else 'No' }}</li>
+    <li class="list-group-item"><strong>Status:</strong> {{ recipe.status }}</li>
+    <li class="list-group-item"><strong>Date Submitted:</strong> {{ recipe.createdAt }}</li>
+  </ul>
+
+  <div class="mt-4">
+    <h5>Ingredients</h5>
+    <p>{{ recipe.ingredients }}</p>
+
+    <h5>Instructions</h5>
+    <p>{{ recipe.instructions }}</p>
+  </div>
+
+  <a href="{{ url_for('view_status', status=recipe.status) }}" class="btn btn-secondary mt-3">Back to {{ recipe.status.title() }} Recipes</a>
+</div>
+{% endblock %}

@@ -8,6 +8,22 @@ def get_db_connection():
   return conn
 
 
+def createStaff():
+  db = get_db_connection()
+  cursor = db.cursor()
+
+  hashed_pw = generate_password_hash("ronron123")
+
+  cursor.execute(
+      '''
+    INSERT INTO Staff (name, username, email, password)
+    VALUES (?, ?, ?, ?)
+    ''', ("Christian", "Notary", "christian.notario@lspu.edu.ph", hashed_pw))
+
+  db.commit()
+  db.close()
+
+
 def createAdmin():
   db = get_db_connection()
   cursor = db.cursor()
@@ -62,6 +78,7 @@ def create_tables():
     CREATE TABLE IF NOT EXISTS Recipes (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       title TEXT,
+      image TEXT,
       ingredients TEXT,
       instructions TEXT,
       duration INTEGER,
@@ -92,6 +109,19 @@ def create_tables():
       FOREIGN KEY (commentor_id) REFERENCES Customers(id),
       FOREIGN KEY (recipe_id) REFERENCES Recipes(id)
     )''')
+
+  cursor.execute('''
+  CREATE TABLE IF NOT EXISTS Contact_Us (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      customer_id INTEGER,
+      name TEXT,
+      email TEXT,
+      subject TEXT,
+      message TEXT,
+      createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (customer_id) REFERENCES Customers(id)
+  )
+  ''')
 
   db.commit()
   db.close()

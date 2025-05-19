@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'customer/base.html' %}
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='favorites.css') }}">
 {% endblock %}
@@ -13,7 +13,7 @@
         <div class="card-info">
           <strong>{{ recipe['title'] }}</strong>
           <small>{{ recipe['category'] }}</small>
-          <a href="{{ url_for('view_recipe', recipe_id=recipe['id']) }}" class="button-link">View Recipe</a>
+          <a href="{{ url_for('view_recipe_customer', recipe_id=recipe['id']) }}" class="button-link">View Recipe</a>
         </div>
       </div>
       {% endfor %}

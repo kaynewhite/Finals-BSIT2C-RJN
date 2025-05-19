@@ -1,0 +1,50 @@
+{% extends 'customer/base.html' %}
+
+{% block body %}
+<main class="recipe-detail">
+  <div class="recipe-container">
+    <!-- Back Button -->
+    <div class="back-button-container">
+      <a href="{{ url_for('chome') }}" class="back-button">← Back to Recipes</a>
+    </div>
+
+    <!-- Header -->
+    <div class="recipe-header">
+      <h2>{{ recipe['title'] }}</h2>
+      <img src="{{ url_for('serve_image', filename=recipe['image']) }}" alt="{{ recipe['title'] }}">
+    </div>
+
+    <!-- Metadata -->
+    <div class="recipe-meta">
+      <p><strong>Course Type:</strong> {{ recipe['courseType'] }}</p>
+      <p><strong>Duration:</strong> {{ recipe['duration'] }} minutes</p>
+    </div>
+
+    <!-- Recipe Content -->
+    <div class="recipe-content">
+      <h3>Ingredients</h3>
+      <ul class="ingredient-list">
+        {% for item in recipe['ingredients'].split(',') %}
+          <li>{{ item }}</li>
+        {% endfor %}
+      </ul>
+
+      <h3>Instructions</h3>
+      <ol class="instruction-list">
+        {% for step in recipe['instructions'].split(',') %}
+          <li>{{ step }}</li>
+        {% endfor %}
+      </ol>
+    </div>
+
+    <!-- Favorite Button -->
+    <form method="POST" action="{{ url_for('toggle_favorite', recipe_id=recipe['id']) }}" class="favorite-form">
+      {% if recipe['id'] in favorite_ids %}
+        <button type="submit" class="favorite-btn remove">❌ Remove from Favorites</button>
+      {% else %}
+        <button type="submit" class="favorite-btn add">❤️ Add to Favorites</button>
+      {% endif %}
+    </form>
+  </div>
+</main>
+{% endblock %}

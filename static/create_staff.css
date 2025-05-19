@@ -1,0 +1,78 @@
+/* Form container */
+.container-fluid {
+  padding: 2rem;
+  background-color: #ffffff;
+  color: #1B3B29;           
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  margin-top: 2rem;
+  margin-left: 25%;
+  width: 40%;
+}
+
+/* Labels */
+.container-fluid label {
+  font-weight: 600;
+  color: #1B3B29;
+}
+
+/* Inputs */
+.container-fluid input[type="text"],
+.container-fluid input[type="email"],
+.container-fluid input[type="password"],
+.container-fluid select,
+.container-fluid input[type="file"] {
+  border: 1.5px solid #292929;
+  border-radius: 5px;
+  padding: 0.5rem;
+  font-size: 1rem;
+  background-color: #f9f9f9;
+  color: #333;
+  width: 95%;
+}
+
+/* Submit Button */
+.container-fluid button.btn-primary {
+  background-color: #2E5F45;
+  border: none;
+  font-weight: bold;
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+}
+
+.container-fluid button.btn-primary:hover {
+  background-color: #1B3B29;
+}
+
+/* Dark mode overrides */
+body.dark-mode .container-fluid {
+  background-color: #1e1e1e;
+  color: #e0e0e0;
+  box-shadow: 0 0 10px rgba(255,255,255,0.05);
+}
+
+body.dark-mode .container-fluid label {
+  color: #cccccc;
+}
+
+body.dark-mode .container-fluid input[type="text"],
+body.dark-mode .container-fluid input[type="email"],
+body.dark-mode .container-fluid input[type="password"],
+body.dark-mode .container-fluid select,
+body.dark-mode .container-fluid input[type="file"] {
+  background-color: #2a2a2a;
+  color: #f0f0f0;
+  border: 1.5px solid #555;
+}
+
+body.dark-mode .container-fluid input::placeholder {
+  color: #aaa;
+}
+
+body.dark-mode .container-fluid button.btn-primary {
+  background-color: #3e8e41;
+}
+
+body.dark-mode .container-fluid button.btn-primary:hover {
+  background-color: #2e5f45;
+}

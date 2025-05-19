@@ -1,0 +1,63 @@
+{% extends 'customer/base.html' %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='account.css') }}">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock %}
+
+{% block body %}
+<main class="main-content">
+  
+  <h2>Account Settings</h2>
+
+  <!-- Section ng personal details -->
+  <form method="POST" class="account-form">
+    <div class="section" id="personal-details-section">
+      <h3 class="section-header">Personal Details <span class="collapse-icon">⮝</span></h3>
+      <div class="section-content">
+        <label for="name">Full Name:</label>
+        <input type="text" name="name" id="name" value="{{ user[0] }}" required>
+
+        <label for="username">Username:</label>
+        <input type="text" name="username" id="username" value="{{ user[1] }}" required>
+
+        <label for="email">Email:</label>
+        <input type="email" name="email" id="email" value="{{ user[2] }}" required>
+      </div>
+    </div>
+
+    <!-- Section ng change password -->
+    <div class="section" id="change-password-section">
+      <h3 class="section-header">Change Password <span class="collapse-icon">⮝</span></h3>
+      <div class="section-content">
+        <label for="current_password">Current Password:</label>
+        <input type="password" name="current_password" id="current_password">
+
+        <label for="new_password">New Password:</label>
+        <input type="password" name="new_password" id="new_password">
+
+        <label for="confirm_password">Confirm New Password:</label>
+        <input type="password" name="confirm_password" id="confirm_password">
+      </div>
+    </div>
+
+    <button type="submit">Update Account</button>
+  </form>
+</main>
+
+<script>
+  $(document).ready(function() {
+    $("#change-password-section .section-header").click(function() {
+      $(this).next(".section-content").slideToggle(); 
+      $(this).toggleClass("active"); 
+      $(this).find(".collapse-icon").text($(this).hasClass("active") ? '⮟' : '⮝'); 
+    });
+
+    $("#personal-details-section .section-header").click(function() {
+      $(this).next(".section-content").slideToggle(); 
+      $(this).toggleClass("active"); 
+      $(this).find(".collapse-icon").text($(this).hasClass("active") ? '⮟' : '⮝'); 
+    });
+  });
+</script>
+
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends 'admin/base.html' %}
+
+{% block title %}{{ status|capitalize }} Recipes{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='status.css') }}" />
+{% endblock %}
+
+{% block body %}
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">{{ status|capitalize }} Recipes</h1>
+
+    {% if recipes %}
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Ingredients</th>
+                <th>Instructions</th>
+                <th>Duration</th>
+                <th>Premium</th>
+                <th>Staff ID</th>
+                <th>Submitted On</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for recipe in recipes %}
+            <tr>
+                <td>{{ recipe.title }}</td>
+                <td>{{ recipe.ingredients }}</td>
+                <td>{{ recipe.instructions }}</td>
+                <td>{{ recipe.duration }}</td>
+                <td>{{ 'Yes' if recipe.isPremium else 'No' }}</td>
+                <td>{{ recipe.staff_id }}</td>
+                <td>{{ recipe.createdAt }}</td>
+                <td>
+                    <a href="{{ url_for('view_recipe', recipe_id=recipe.id) }}" class="btn btn-info btn-sm">View</a>
+                    {% if status == 'pending' %}
+                        <a href="{{ url_for('approve_recipe', recipe_id=recipe.id) }}" class="btn btn-success btn-sm">Approve</a>
+                        <a href="{{ url_for('reject_recipe', recipe_id=recipe.id) }}" class="btn btn-danger btn-sm">Reject</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No {{ status }} recipes found.</p>
+    {% endif %}
+</div>
+{% endblock %}

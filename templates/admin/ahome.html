@@ -1,0 +1,39 @@
+{% extends 'admin/base.html' %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='ahome.css') }}">
+{% endblock %}
+{% block body %}
+
+<div class="main-content">
+  <h2 class="section-title">Admin Dashboard</h2>
+  <div class="dashboard-cards">
+    <div class="dashboard-card">
+      <h3>{{ user_count }}</h3>
+      <p>Customers</p>
+    </div>
+    <div class="dashboard-card">
+      <h3>{{ staff_count }}</h3>
+      <p>Staff</p>
+    </div>
+    <div class="dashboard-card">
+      <h3>{{ approved_count }}</h3>
+      <p>Approved Recipes</p>
+    </div>
+    <div class="dashboard-card">
+      <h3>{{ pending_count }}</h3>
+      <p>Pending Recipes</p>
+    </div>
+  </div>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div class="flashes">
+      {% for category, message in messages %}
+        <div class="flash {{ category }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+{% endblock %}
