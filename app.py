@@ -64,6 +64,62 @@ def chome():
     return redirect(url_for('login'))
 
 
+@app.route('/search')
+def search():
+    if 'user_id' not in session or session['role'] != 'customer':
+        flash("Please log in to search recipes.", "danger")
+        return redirect(url_for('login'))
+
+    query = request.args.get('q', '').strip()
+
+    if not query:
+        flash("Enter a keyword to search.", "warning")
+        return redirect(url_for('chome'))
+
+    db = get_db_connection()
+    cursor = db.cursor()
+
+    cursor.execute(
+        '''
+        SELECT id, title, image, ingredients, instructions, duration, courseType, isPremium
+        FROM Recipes
+        WHERE (title LIKE ? OR ingredients LIKE ?)
+          AND (isPremium = 0 OR (
+              isPremium = 1 AND EXISTS (
+                  SELECT 1 FROM Customers WHERE id = ? AND subscribed = 1
+              )
+          ))
+          AND title IS NOT NULL
+          AND courseType IS NOT NULL
+          AND status != 'rejected'  -- Exclude rejected recipes
+        ORDER BY createdAt DESC
+        ''', (f'%{query}%', f'%{query}%', session['user_id']))
+
+    results = cursor.fetchall()
+    print(results)
+    db.close()
+
+    # Replace None titles with a placeholder in the results
+    for recipe in results:
+        if recipe['title'] is None:
+            recipe['title'] = "Untitled Recipe"
+
+    # Check if customer is premium
+    is_premium = False
+    db = get_db_connection()
+    cursor = db.cursor()
+    cursor.execute("SELECT subscribed FROM Customers WHERE id = ?",
+                   (session['user_id'], ))
+    user = cursor.fetchone()
+    if user and user['subscribed'] == 1:
+        is_premium = True
+    db.close()
+
+    return render_template('customer/chome.html',
+                           recipes=results,
+                           is_premium=is_premium)
+
+
 @app.route('/recipe/<int:recipe_id>')
 def view_recipe_customer(recipe_id):
     if 'user_id' not in session or session['role'] != 'customer':
@@ -91,6 +147,26 @@ def view_recipe_customer(recipe_id):
                   "danger")
             return redirect(url_for('chome'))
 
+    cursor.execute(
+        '''
+        SELECT Comments.*, Customers.username
+        FROM Comments
+        JOIN Customers ON Comments.commentor_id = Customers.id
+        WHERE recipe_id = ?
+        ORDER BY commentedAt DESC
+    ''', (recipe_id, ))
+    comments = cursor.fetchall()
+
+    cursor.execute(
+        "SELECT COUNT(*) as like_count FROM Likes WHERE recipe_id = ?",
+        (recipe_id, ))
+    like_count = cursor.fetchone()['like_count']
+
+    cursor.execute(
+        "SELECT * FROM Likes WHERE customer_id = ? AND recipe_id = ?",
+        (session['user_id'], recipe_id))
+    liked = cursor.fetchone() is not None
+
     cursor.execute("SELECT recipe_id FROM Favorites WHERE customer_id = ?",
                    (session['user_id'], ))
     favorite_ids = {row['recipe_id'] for row in cursor.fetchall()}
@@ -99,7 +175,85 @@ def view_recipe_customer(recipe_id):
 
     return render_template('customer/view_recipe.html',
                            recipe=recipe,
-                           favorite_ids=favorite_ids)
+                           comments=comments,
+                           like_count=like_count,
+                           liked=liked,
+                           favorite_ids=favorite_ids,
+                           user_id=session['user_id'])
+
+
+@app.route('/recipe/<int:recipe_id>/like', methods=['POST'])
+def like_recipe(recipe_id):
+    if 'user_id' not in session or session['role'] != 'customer':
+        return redirect(url_for('login'))
+
+    db = get_db_connection()
+    cursor = db.cursor()
+
+    cursor.execute(
+        "SELECT * FROM Likes WHERE customer_id = ? AND recipe_id = ?",
+        (session['user_id'], recipe_id))
+    liked = cursor.fetchone()
+
+    if liked:
+        cursor.execute(
+            "DELETE FROM Likes WHERE customer_id = ? AND recipe_id = ?",
+            (session['user_id'], recipe_id))
+    else:
+        cursor.execute(
+            "INSERT INTO Likes (customer_id, recipe_id) VALUES (?, ?)",
+            (session['user_id'], recipe_id))
+
+    db.commit()
+    db.close()
+    return redirect(url_for('view_recipe_customer', recipe_id=recipe_id))
+
+
+@app.route('/recipe/<int:recipe_id>/comment', methods=['POST'])
+def add_comment(recipe_id):
+    if 'user_id' not in session or session['role'] != 'customer':
+        return redirect(url_for('login'))
+
+    comment = request.form['comment'].strip()
+    if not comment:
+        flash("Comment cannot be empty.", "warning")
+        return redirect(url_for('view_recipe_customer', recipe_id=recipe_id))
+
+    db = get_db_connection()
+    cursor = db.cursor()
+    cursor.execute(
+        "INSERT INTO Comments (comment, commentor_id, recipe_id) VALUES (?, ?, ?)",
+        (comment, session['user_id'], recipe_id))
+    db.commit()
+    db.close()
+
+    flash("Comment added successfully!", "success")
+    return redirect(url_for('view_recipe_customer', recipe_id=recipe_id))
+
+
+@app.route('/recipe/<int:recipe_id>/delete_comment/<int:comment_id>',
+           methods=['POST'])
+def delete_comment(recipe_id, comment_id):
+    if 'user_id' not in session or session['role'] != 'customer':
+        flash("Unauthorized access. Please log in as a customer.", "danger")
+        return redirect(url_for('login'))
+
+    db = get_db_connection()
+    cursor = db.cursor()
+
+    cursor.execute("SELECT * FROM Comments WHERE id = ? AND commentor_id = ?",
+                   (comment_id, session['user_id']))
+    comment = cursor.fetchone()
+
+    if comment:
+        cursor.execute("DELETE FROM Comments WHERE id = ?", (comment_id, ))
+        db.commit()
+        flash("Comment deleted successfully.", "success")
+    else:
+        flash("You are not authorized to delete this comment.", "danger")
+
+    db.close()
+    return redirect(url_for('view_recipe_customer', recipe_id=recipe_id))
 
 
 @app.route('/favorite/<int:recipe_id>', methods=['POST'])
@@ -164,6 +318,7 @@ def ahome():
         db = get_db_connection()
         cursor = db.cursor()
 
+        # Get user info
         cursor.execute(
             "SELECT subscribed, username FROM Customers WHERE id = ?",
             (session['user_id'], ))
@@ -172,22 +327,41 @@ def ahome():
         is_premium = user['subscribed'] == 1 if user else False
         username = user['username']
 
+        # Recipe filtering
         if is_premium or session['role'] == 'admin':
             cursor.execute("SELECT * FROM Recipes WHERE status = 'approved'")
         else:
-            cursor.execute(
-                "SELECT * FROM Recipes WHERE status = 'approved' AND isPremium = 0"
-            )
-
+            cursor.execute("SELECT * FROM Recipes WHERE status = 'approved' AND isPremium = 0")
         recipes = cursor.fetchall()
+
+        # count queries
+        cursor.execute("SELECT COUNT(*) FROM Customers")
+        user_count = cursor.fetchone()[0]
+
+        cursor.execute("SELECT COUNT(*) FROM Staff")
+        staff_count = cursor.fetchone()[0]
+
+        cursor.execute("SELECT COUNT(*) FROM Recipes WHERE status = 'approved'")
+        approved_count = cursor.fetchone()[0]
+
+        cursor.execute("SELECT COUNT(*) FROM Recipes WHERE status = 'pending'")
+        pending_count = cursor.fetchone()[0]
+
         db.close()
 
-        return render_template('admin/ahome.html',
-                               username=username,
-                               is_premium=is_premium,
-                               recipes=recipes)
+        return render_template(
+            'admin/ahome.html',
+            username=username,
+            is_premium=is_premium,
+            recipes=recipes,
+            user_count=user_count,
+            staff_count=staff_count,
+            approved_count=approved_count,
+            pending_count=pending_count
+        )
 
     return redirect(url_for('login'))
+
 
 
 # Home for staff
@@ -208,11 +382,24 @@ def add_recipe():
 
     if request.method == 'POST':
         title = request.form['title']
-        ingredients = request.form['ingredients']
-        instructions = request.form['instructions']
+
+        # Get lists from form and join them with commas
+        ingredients_list = request.form.getlist('ingredients[]')
+        instructions_list = request.form.getlist('instructions[]')
+
+        ingredients = ', '.join([item.strip() for item in ingredients_list if item.strip()])
+        instructions = ', '.join([item.strip() for item in instructions_list if item.strip()])
+
         duration = request.form['duration']
-        course_type = request.form['course_type']  # <-- NEW
+        course_type = request.form['course_type']
         is_premium = 1 if 'isPremium' in request.form else 0
+
+        allowed_course_types = [
+            "Appetizer", "Beverage", "Dessert", "Main Course", "Salad", "Soup"
+        ]
+        if course_type not in allowed_course_types:
+            flash("Invalid course type selected.", "danger")
+            return redirect(url_for('add_recipe'))
 
         image_file = request.files['image']
         image_filename = None
@@ -221,7 +408,7 @@ def add_recipe():
             filename = secure_filename(image_file.filename)
             filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
 
-            # Avoid overwriting existing files
+            # Make filename unique if needed
             counter = 1
             base, ext = os.path.splitext(filename)
             while os.path.exists(filepath):
@@ -231,6 +418,9 @@ def add_recipe():
 
             image_file.save(filepath)
             image_filename = filename
+        else:
+            flash("Invalid or missing image file.", "danger")
+            return redirect(url_for('add_recipe'))
 
         db = get_db_connection()
         cursor = db.cursor()
@@ -238,8 +428,10 @@ def add_recipe():
             '''
             INSERT INTO Recipes (title, ingredients, instructions, duration, courseType, isPremium, image, staff_id)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-            ''', (title, ingredients, instructions, duration, course_type,
-                  is_premium, image_filename, session['user_id']))
+            ''',
+            (title, ingredients, instructions, duration, course_type,
+             is_premium, image_filename, session['user_id'])
+        )
         db.commit()
         db.close()
 
@@ -247,6 +439,7 @@ def add_recipe():
         return redirect(url_for('add_recipe'))
 
     return render_template('staff/add_recipe.html')
+
 
 
 # View recipes by status (staff only)
@@ -293,7 +486,6 @@ def view_staff_recipe(recipe_id):
 
     return render_template('staff/view_recipe.html', recipe=recipe)
 
-
 @app.route('/admin/status/<status>')
 def admin_view_status(status):
     if 'user_id' not in session or session['role'] != 'admin':
@@ -306,12 +498,20 @@ def admin_view_status(status):
 
     db = get_db_connection()
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM Recipes WHERE status = ?", (status, ))
+
+    # Join Recipes with Staff to get staff name
+    cursor.execute("""
+        SELECT Recipes.id, Recipes.title, Recipes.isPremium, Recipes.createdAt,
+               Staff.name AS staff_name
+        FROM Recipes
+        JOIN Staff ON Recipes.staff_id = Staff.id
+        WHERE Recipes.status = ?
+    """, (status,))
+
     recipes = cursor.fetchall()
     db.close()
 
     return render_template('admin/status.html', recipes=recipes, status=status)
-
 
 @app.route('/admin/recipe/<int:recipe_id>')
 def view_recipe(recipe_id):
@@ -321,16 +521,27 @@ def view_recipe(recipe_id):
 
     db = get_db_connection()
     cursor = db.cursor()
-    cursor.execute("SELECT * FROM Recipes WHERE id = ?", (recipe_id, ))
+
+    # Get recipe
+    cursor.execute("SELECT * FROM Recipes WHERE id = ?", (recipe_id,))
     recipe = cursor.fetchone()
-    db.close()
 
     if not recipe:
+        db.close()
         flash("Recipe not found.", "danger")
         return redirect(url_for('admin_view_status', status='pending'))
 
-    return render_template('admin/view_recipe.html', recipe=recipe)
+    cursor.execute('''
+        SELECT Comments.comment, Comments.commentedAt, Customers.name
+        FROM Comments
+        JOIN Customers ON Comments.commentor_id = Customers.id
+        WHERE Comments.recipe_id = ?
+        ORDER BY Comments.commentedAt DESC
+    ''', (recipe_id,))
+    comments = cursor.fetchall()
 
+    db.close()
+    return render_template('admin/view_recipe.html', recipe=recipe, comments=comments)
 
 @app.route('/admin/recipes/<int:recipe_id>/approve')
 def approve_recipe(recipe_id):
@@ -421,11 +632,15 @@ def admin_users():
     cursor.execute("SELECT * FROM Customers WHERE subscribed = 0")
     unsubscribed_users = cursor.fetchall()
 
+    cursor.execute("SELECT * FROM Customers WHERE isBanned = 1")
+    banned_users = cursor.fetchall()
+
     db.close()
 
     return render_template('admin/users.html',
                            subscribed_users=subscribed_users,
-                           unsubscribed_users=unsubscribed_users)
+                           unsubscribed_users=unsubscribed_users,
+                           banned_users=banned_users)
 
 
 @app.route('/admin/ban_user', methods=['POST'])
@@ -439,12 +654,32 @@ def ban_user():
     db = get_db_connection()
     cursor = db.cursor()
 
-    cursor.execute("DELETE FROM Customers WHERE id = ?", (user_id, ))
-
+    cursor.execute("UPDATE Customers SET isBanned = 1 WHERE id = ?",
+                   (user_id, ))
     db.commit()
     db.close()
 
-    flash("User has been banned (removed).", "info")
+    flash("User has been banned.", "info")
+    return redirect(url_for('admin_users'))
+
+
+@app.route('/admin/unban_user', methods=['POST'])
+def unban_user():
+    if 'user_id' not in session or session['role'] != 'admin':
+        flash("Unauthorized access.", "danger")
+        return redirect(url_for('login'))
+
+    user_id = request.form['user_id']
+
+    db = get_db_connection()
+    cursor = db.cursor()
+
+    cursor.execute("UPDATE Customers SET isBanned = 0 WHERE id = ?",
+                   (user_id, ))
+    db.commit()
+    db.close()
+
+    flash("User has been unbanned.", "success")
     return redirect(url_for('admin_users'))
 
 
@@ -682,6 +917,14 @@ def login():
         user = cursor.fetchone()
 
         if user:
+            if role == 'customer' and user['isBanned']:
+
+                print("Role: ", role)
+                print("isBanned: ", user['isBanned'])
+                flash("Your account has been banned.", "danger")
+                db.close()
+                return redirect(url_for('login'))
+
             stored_password = user[2] if role == 'admin' else user[4]
             username_from_db = user[1] if role == 'admin' else user[2]
 
@@ -714,4 +957,4 @@ def serve_image(filename):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5173, debug=True)

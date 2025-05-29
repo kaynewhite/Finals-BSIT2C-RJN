@@ -12,11 +12,12 @@ body {
   overflow-x: hidden;
   margin: 0;
   padding: 0;
-  /* align-items: center; */
+  align-items: center;
+  /* overflow-y: hidden; */
 }
 
 .main-content {
-  margin-left: 70px;
+  padding-right: 300px;
   padding: 5rem;
   box-sizing: border-box;
   min-height: calc(100vh - 70px);
@@ -24,6 +25,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 70px;
+  overflow-y: hidden;
 }
 
 .section-title,
@@ -36,6 +39,11 @@ body {
   color: #000000;
 }
 
+.content{
+  transform: translate(-100px, 0);
+  
+}
+
 /* Cards container */
 .cards {
   display: flex;
@@ -43,7 +51,7 @@ body {
   justify-content: space-between;
   gap: 24px;
   width: 100%;
-  max-width: 1500px;
+  max-width: 1500;
   margin: 0 auto;
 }
 
@@ -59,9 +67,10 @@ body {
   min-height: 250px;
   opacity: 0;
   overflow: hidden;
-  height: 80%;
+  height: 60%;
+  
 }
-/* PRE AYAW GUMANA HAHAHWHFAHHFAH, KAHIT TAMA YUNG LINK, customer/premium.html pero ayaw gumana ABA AYOKO  hayaan mo na makalat AHHAHAHAH*/
+
 /* Card image */
 .card img, .cardLocked img {
   width: 100%;
@@ -147,7 +156,7 @@ body {
 }
 
 .premium-star:hover {
-  transform: scale(3);
+  transform: scale(1.3);
 }
 
 @keyframes glow {

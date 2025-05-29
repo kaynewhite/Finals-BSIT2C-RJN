@@ -111,6 +111,18 @@ def create_tables():
     )''')
 
   cursor.execute('''
+    CREATE TABLE IF NOT EXISTS Likes (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      customer_id INTEGER,
+      recipe_id INTEGER,
+      likedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY (customer_id) REFERENCES Customers(id),
+      FOREIGN KEY (recipe_id) REFERENCES Recipes(id),
+      UNIQUE (customer_id, recipe_id)
+    )
+  ''')
+
+  cursor.execute('''
   CREATE TABLE IF NOT EXISTS Contact_Us (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       customer_id INTEGER,

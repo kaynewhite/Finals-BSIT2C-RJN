@@ -6,53 +6,59 @@
 
 {% block body %}
 <main class="main-content">
+
+  <!-- Section Title -->
+  {% if request.endpoint == 'search' %}
+  <h2 class="section-title">Search Results for "{{ request.args.get('q') }}"</h2>
+  {% else %}
   <h2 class="section-title">Recipes</h2>
+  {% endif %}
 
   <div class="status-banner">
     {% if is_premium %}
-      <p class="premium-status">🌟 You are a Premium Member</p>
+    <p class="premium-status">🌟 You are a Premium Member</p>
     {% else %}
-      <p class="premium-status">👤 Standard Member — <a href="{{ url_for('premium') }}">Upgrade</a></p>
+    <p class="premium-status">👤 Standard Member — <a href="{{ url_for('premium') }}">Upgrade</a></p>
     {% endif %}
   </div>
 
-  <div class="content">
+  <!-- <div class="content"> -->
     <div class="cards">
       {% if recipes %}
-        {% for recipe in recipes %}
-          {% if recipe['isPremium'] == 1 and not is_premium %}
-            <!-- Locked Recipe Card -->
-            <div class="cardLocked">
-              <img src="{{ url_for('serve_image', filename=recipe['image']) }}" alt="{{ recipe['title'] }}">
-              <div class="card-info">
-                <strong>{{ recipe['title'] }}</strong>
-                <small><span class="locked-icon">🔒</span> Locked</small>
-              </div>
-            </div>
-          {% else %}
-            <!-- Clickable Recipe Card -->
-            <div class="card">
-              <a href="{{ url_for('view_recipe_customer', recipe_id=recipe['id']) }}" class="card-link">
-                <img src="{{ url_for('serve_image', filename=recipe['image']) }}" alt="{{ recipe['title'] }}">
-                <div class="card-info">
-                  <strong>{{ recipe['title'] }}</strong>
-                  <small>{{ recipe['courseType'] }}</small>
-                </div>
-              </a>
-            </div>
-          {% endif %}
-        {% endfor %}
+      {% for recipe in recipes %}
+      {% if recipe['isPremium'] == 1 and not is_premium %}
+      <!-- Locked Recipe Card -->
+      <div class="cardLocked">
+        <img src="{{ url_for('serve_image', filename=recipe['image']) }}" alt="{{ recipe['title'] }}">
+        <div class="card-info">
+          <strong>{{ recipe['title'] }}</strong>
+          <small><span class="locked-icon">🔒</span> Locked</small>
+        </div>
+      </div>
       {% else %}
-        <p class="no-recipes">No recipes available.</p>
+      <!-- Clickable Recipe Card -->
+      <div class="card">
+        <a href="{{ url_for('view_recipe_customer', recipe_id=recipe['id']) }}" class="card-link">
+          <img src="{{ url_for('serve_image', filename=recipe['image']) }}" alt="{{ recipe['title'] }}">
+          <div class="card-info">
+            <strong>{{ recipe['title'] if recipe['title'] else "Untitled Recipe" }}</strong>
+            <small>{{ recipe['courseType'] if recipe['courseType'] else "Unknown Course Type" }}</small>
+          </div>
+        </a>
+      </div>
+      {% endif %}
+      {% endfor %}
+      {% else %}
+      <p class="no-recipes">No recipes available.</p>
       {% endif %}
     </div>
 
-    <div class="bottom-buttons">
+    <!-- <div class="bottom-buttons">
       <a href="{{ url_for('favorites') }}">
         <button class="premium-star" title="View Favorites">⭐</button>
       </a>
-    </div>
-  </div>
+    </div> -->
+  <!-- </div> -->
 </main>
 
 <!-- Card Animation Script -->
@@ -66,4 +72,5 @@
     });
   });
 </script>
+
 {% endblock %}

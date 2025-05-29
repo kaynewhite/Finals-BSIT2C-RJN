@@ -1,8 +1,13 @@
 {% extends 'customer/base.html' %}
 
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='view_recipe.css') }}">
+{% endblock %}
+
 {% block body %}
 <main class="recipe-detail">
   <div class="recipe-container">
+
     <!-- Back Button -->
     <div class="back-button-container">
       <a href="{{ url_for('chome') }}" class="back-button">← Back to Recipes</a>
@@ -11,7 +16,20 @@
     <!-- Header -->
     <div class="recipe-header">
       <h2>{{ recipe['title'] }}</h2>
-      <img src="{{ url_for('serve_image', filename=recipe['image']) }}" alt="{{ recipe['title'] }}">
+      <div class="image-actions-wrapper">
+        <img src="{{ url_for('serve_image', filename=recipe['image']) }}" alt="{{ recipe['title'] }}" class="recipe-image">
+
+        <!-- Favorite Button -->
+        <div class="action-buttons">
+          <form method="POST" action="{{ url_for('toggle_favorite', recipe_id=recipe['id']) }}" class="favorite-form">
+            {% if recipe['id'] in favorite_ids %}
+              <button type="submit" class="favorite-btn remove">❌ Remove from Favorites</button>
+            {% else %}
+              <button type="submit" class="favorite-btn add">❤️ Add to Favorites</button>
+            {% endif %}
+          </form>
+        </div>
+      </div>
     </div>
 
     <!-- Metadata -->
@@ -37,14 +55,76 @@
       </ol>
     </div>
 
-    <!-- Favorite Button -->
-    <form method="POST" action="{{ url_for('toggle_favorite', recipe_id=recipe['id']) }}" class="favorite-form">
-      {% if recipe['id'] in favorite_ids %}
-        <button type="submit" class="favorite-btn remove">❌ Remove from Favorites</button>
-      {% else %}
-        <button type="submit" class="favorite-btn add">❤️ Add to Favorites</button>
-      {% endif %}
+    <!-- Like Button -->
+    <form method="POST" action="{{ url_for('like_recipe', recipe_id=recipe['id']) }}" class="like-form">
+      <button type="submit" class="like-btn">
+        {% if liked %}
+          ❤️ Liked
+        {% else %}
+          🤍 Like
+        {% endif %}
+      </button>
+      <span>{{ like_count }} {{ 'like' if like_count == 1 else 'likes' }}</span>
     </form>
+
+    <!-- Comments Section Toggle -->
+    <button id="toggle-comments-btn" class="toggle-comments-btn">Hide Comments</button>
+
+    <!-- Comments Section -->
+    <div class="comments-section" id="comments-section">
+      <h3>Comments</h3>
+
+      <!-- Add Comment Form -->
+      <form method="POST" action="{{ url_for('add_comment', recipe_id=recipe['id']) }}" class="comment-form">
+        <textarea name="comment" placeholder="Write a comment..." required></textarea>
+        <button type="submit">Post Comment</button>
+      </form>
+
+      {% if comments %}
+        <!-- Expand/Collapse Button -->
+        <button id="toggle-comment-list" class="toggle-comments-btn" style="margin-top: 1em;">Expand Comments ⌄</button>
+
+        <ul class="comment-list collapsible">
+          {% for c in comments %}
+            <li class="comment-item">
+              <strong>{{ c['username'] }}</strong> on {{ c['commentedAt'] }}<br>
+              {{ c['comment'] }}
+
+              {% if c['commentor_id'] == user_id %}
+                <form method="POST" action="{{ url_for('delete_comment', comment_id=c['id'], recipe_id=recipe['id']) }}" class="delete-comment-form">
+                  <button type="submit" class="delete-comment-btn">🗑 Delete</button>
+                </form>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No comments yet. Be the first to comment!</p>
+      {% endif %}
+    </div>
+
   </div>
 </main>
+
+<!-- JavaScript to toggle comments section -->
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const toggleBtn = document.getElementById('toggle-comments-btn');
+    const commentsSection = document.getElementById('comments-section');
+    const commentList = document.querySelector('.comment-list');
+    const toggleListBtn = document.getElementById('toggle-comment-list');
+
+    toggleBtn.addEventListener('click', () => {
+      commentsSection.classList.toggle('hidden');
+      toggleBtn.textContent = commentsSection.classList.contains('hidden') ? 'Show Comments' : 'Hide Comments';
+    });
+
+    if (toggleListBtn && commentList) {
+      toggleListBtn.addEventListener('click', () => {
+        commentList.classList.toggle('expanded');
+        toggleListBtn.textContent = commentList.classList.contains('expanded') ? 'Collapse Comments ⌃' : 'Expand Comments ⌄';
+      });
+    }
+  });
+</script>
 {% endblock %}

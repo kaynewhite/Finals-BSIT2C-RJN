@@ -1,6 +1,7 @@
 {% extends 'admin/base.html' %}
 
 {% block title %}Manage Users{% endblock %}
+
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='admin_users.css') }}" />
 {% endblock %}
@@ -8,19 +9,25 @@
 {% block body %}
 <div class="container-fluid">
     <h1 class="h3 mb-4 text-gray-800">Manage Users</h1>
-    
-    <!-- Tab navigation for subscribed and not subscribed users -->
+
+    <!-- Tab navigation for subscribed, not subscribed, and banned users -->
     <ul class="nav nav-tabs" id="subscriptionTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <a class="nav-link active" id="subscribed-tab" data-bs-toggle="tab" href="#subscribed" role="tab" aria-controls="subscribed" aria-selected="true">Subscribed</a>
+            <a class="nav-link active" id="subscribed-tab" data-bs-toggle="tab" href="#subscribed" role="tab"
+               aria-controls="subscribed" aria-selected="true">Subscribed</a>
         </li>
         <li class="nav-item" role="presentation">
-            <a class="nav-link" id="notSubscribed-tab" data-bs-toggle="tab" href="#notSubscribed" role="tab" aria-controls="notSubscribed" aria-selected="false">Not Subscribed</a>
+            <a class="nav-link" id="notSubscribed-tab" data-bs-toggle="tab" href="#notSubscribed" role="tab"
+               aria-controls="notSubscribed" aria-selected="false">Not Subscribed</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="banned-tab" data-bs-toggle="tab" href="#banned" role="tab"
+               aria-controls="banned" aria-selected="false">Banned Users</a>
         </li>
     </ul>
 
     <div class="tab-content mt-3" id="subscriptionTabContent">
-        
+
         <!-- Subscribed users -->
         <div class="tab-pane fade show active" id="subscribed" role="tabpanel" aria-labelledby="subscribed-tab">
             <table class="table table-bordered">
@@ -40,7 +47,8 @@
                             <td>{{ user.username }}</td>
                             <td>{{ user.email }}</td>
                             <td>
-                                <form method="POST" action="{{ url_for('ban_user', user_id=user.id) }}" style="display:inline;">
+                                <form method="POST" action="{{ url_for('ban_user') }}" style="display:inline;">
+                                    <input type="hidden" name="user_id" value="{{ user.id }}">
                                     <button type="submit" class="btn btn-danger">Ban</button>
                                 </form>
                             </td>
@@ -54,7 +62,7 @@
                 </tbody>
             </table>
         </div>
-        
+
         <!-- Not subscribed users -->
         <div class="tab-pane fade" id="notSubscribed" role="tabpanel" aria-labelledby="notSubscribed-tab">
             <table class="table table-bordered">
@@ -74,7 +82,8 @@
                             <td>{{ user.username }}</td>
                             <td>{{ user.email }}</td>
                             <td>
-                                <form method="POST" action="{{ url_for('ban_user', user_id=user.id) }}" style="display:inline;">
+                                <form method="POST" action="{{ url_for('ban_user') }}" style="display:inline;">
+                                    <input type="hidden" name="user_id" value="{{ user.id }}">
                                     <button type="submit" class="btn btn-danger">Ban</button>
                                 </form>
                             </td>
@@ -88,6 +97,42 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Banned users -->
+        <div class="tab-pane fade" id="banned" role="tabpanel" aria-labelledby="banned-tab">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="tbody">
+                    {% if banned_users %}
+                        {% for user in banned_users %}
+                        <tr>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>
+                                <form method="POST" action="{{ url_for('unban_user') }}" style="display:inline;">
+                                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                                    <button type="submit" class="btn btn-success">Unban</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center">No banned users found.</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
     </div>
 </div>
 {% endblock %}

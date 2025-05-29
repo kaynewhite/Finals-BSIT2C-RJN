@@ -1,21 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
   <link rel="stylesheet" href="{{ url_for('static', filename='authbase.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='backg.css') }}">
   <title>RecipeHub</title>
-  {% block head %} {% endblock %}
+  {% block head %}{% endblock %}
 </head>
+
 <body>
+
+  <div class="green-background"></div>
+
+  <div class="login-container">
+    {% block body %}{% endblock %}
+  </div>
+
+  <div class="framer-background">
+    {% set categories = ['main', 'salad', 'dessert', 'appetizer', 'beverage'] %}
+    {% for col in range(5) %}
+    <div class="image-column" style="--delay: {{ col * 4 }}s;">
+      <div class="image-track">
+        {% for i in range(1, 6) %}
+        <img src="{{ url_for('static', filename='backgroundimg/' ~ categories[col] ~ i ~ '.jpg') }}"
+          alt="{{ categories[col] }} image {{ i }}">
+        {% endfor %}
+        {% for i in range(1, 6) %}
+        <img src="{{ url_for('static', filename='backgroundimg/' ~ categories[col] ~ i ~ '.jpg') }}"
+          alt="{{ categories[col] }} image {{ i }}">
+        {% endfor %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+
   {% block header %}
   <header>
     <span class="logo"><b>RecipeHub</b></span>
   </header>
   {% endblock %}
-  
-  {% block body %} {% endblock %}
 </body>
+
 </html>

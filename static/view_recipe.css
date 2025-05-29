@@ -1,0 +1,283 @@
+/* GENERAL */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+.recipe-detail {
+  padding: 2em;
+  max-width: 1000px;
+  margin: auto;
+}
+
+.back-button-container {
+  margin-bottom: 1.5em;
+}
+
+.back-button {
+  text-decoration: none;
+  color: #007BFF;
+  font-weight: bold;
+}
+
+.back-button:hover {
+  text-decoration: underline;
+}
+
+/* RECIPE HEADER */
+.recipe-header {
+  margin-bottom: 1.5em;
+}
+
+.recipe-header h2 {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.8em;
+}
+
+.image-actions-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2em;
+  align-items: flex-start;
+}
+
+.recipe-image {
+  max-width: 100%;
+  width: 350px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* BUTTONS */
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.favorite-form,
+.like-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+}
+
+.favorite-btn,
+.like-btn {
+  font-size: 1em;
+  padding: 0.6em 1.2em;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.favorite-btn.add {
+  background-color: #ffe5e5;
+  color: #cc0000;
+}
+
+.favorite-btn.remove {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.favorite-btn.add:hover {
+  background-color: #ffcccc;
+}
+
+.favorite-btn.remove:hover {
+  background-color: #e0e0e0;
+}
+
+.like-btn {
+  background-color: #fff0f5;
+  color: #d63384;
+}
+
+.like-btn:hover {
+  background-color: #ffe3ed;
+}
+
+/* METADATA */
+.recipe-meta {
+  margin: 1.5em 0;
+  font-size: 1.05em;
+}
+
+/* CONTENT */
+.recipe-content h3 {
+  margin-top: 1.5em;
+  font-size: 1.3em;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 0.4em;
+}
+
+.ingredient-list,
+.instruction-list {
+  margin-top: 0.5em;
+  padding-left: 1.2em;
+}
+
+.ingredient-list li,
+.instruction-list li {
+  margin-bottom: 0.4em;
+}
+
+/* COMMENTS */
+.comments-section {
+  margin-top: 2.5em;
+}
+
+.comment-form textarea {
+  width: 100%;
+  height: 70px;
+  padding: 0.75em;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  resize: vertical;
+}
+
+.comment-form button {
+  margin-top: 0.5em;
+  padding: 0.6em 1.2em;
+  font-weight: 600;
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.comment-form button:hover {
+  background-color: #0056b3;
+}
+
+.comment-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 1em;
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+.comment-item {
+  margin-bottom: 1em;
+  padding-bottom: 0.75em;
+  border-bottom: 1px solid #ddd;
+}
+
+.comment-item strong {
+  color: #222;
+}
+
+/* DARK MODE SUPPORT */
+body.dark-mode {
+  background-color: #121212;
+  color: #f1f1f1;
+}
+
+body.dark-mode .back-button {
+  color: #90caf9;
+}
+
+body.dark-mode .recipe-image {
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.08);
+}
+
+body.dark-mode .favorite-btn.add {
+  background-color: #4b1f1f;
+  color: #ff9999;
+}
+
+body.dark-mode .favorite-btn.remove {
+  background-color: #333;
+  color: #eee;
+}
+
+body.dark-mode .like-btn {
+  background-color: #3b2c35;
+  color: #ff77aa;
+}
+
+body.dark-mode .comment-form textarea {
+  background-color: #2b2b2b;
+  color: #f1f1f1;
+  border: 1px solid #555;
+}
+
+body.dark-mode .comment-form button {
+  background-color: #1e88e5;
+}
+
+body.dark-mode .comment-item {
+  border-bottom: 1px solid #444;
+}
+
+body.dark-mode .comment-item strong {
+  color: #ffffff;
+}
+
+body.dark-mode .comment-list {
+  scrollbar-color: #666 #2b2b2b;
+  scrollbar-width: thin;
+}
+
+/* Toggle button */
+.toggle-comments-btn {
+  margin-top: 1.5em;
+  padding: 0.6em 1.2em;
+  background-color: #f0f0f0;
+  color: #333;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.toggle-comments-btn:hover {
+  background-color: #ddd;
+}
+
+body.dark-mode .toggle-comments-btn {
+  background-color: #333;
+  color: #fff;
+}
+
+body.dark-mode .toggle-comments-btn:hover {
+  background-color: #444;
+}
+
+/* Hidden state */
+.hidden {
+  display: none;
+}
+
+/* Dropdown animation */
+.comment-list.collapsible {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease;
+}
+
+.comment-list.expanded {
+  max-height: 350px;
+}
+
+.delete-comment-form {
+  display: inline;
+  margin-left: 10px;
+}
+
+.delete-comment-btn {
+  background: transparent;
+  border: none;
+  color: red;
+  cursor: pointer;
+  font-size: 0.9em;
+}

@@ -24,16 +24,15 @@
   <nav class="sidebar">
     <ul class="nav flex-column">
       <li><a href="{{ url_for('ahome') }}" class="nav-link {% if request.endpoint == 'ahome' %}active{% endif %}">Home</a></li>
-      <li><a href="{{ url_for('create_staff') }}" class="nav-link">Create Staff</a></li>
-      <li><a href="{{ url_for('admin_users') }}" class="nav-link">Users</a></li>
-      <li><a href="{{ url_for('admin_view_status', status='approved') }}" class="nav-link">Approved</a></li>
-      <li><a href="{{ url_for('admin_view_status', status='pending') }}" class="nav-link">Pending</a></li>
-      <li><a href="{{ url_for('admin_view_status', status='rejected') }}" class="nav-link">Rejected</a></li>
-      <li><a href="{{ url_for('admin_inbox') }}" class="nav-link">Inbox</a></li>
+      <li><a href="{{ url_for('create_staff') }}" class="nav-link {% if request.endpoint == 'create_staff' %}active{% endif %}">Create Staff</a></li>
+      <li><a href="{{ url_for('admin_users') }}" class="nav-link {% if request.endpoint == 'admin_users' %}active{% endif %}">Users</a></li>
+      <li><a href="{{ url_for('admin_view_status', status='approved') }}" class="nav-link {% if request.endpoint == 'admin_view_status' and request.view_args.status == 'approved' %}active{% endif %}">Approved</a></li>
+      <li><a href="{{ url_for('admin_view_status', status='pending') }}" class="nav-link {% if request.endpoint == 'admin_view_status' and request.view_args.status == 'pending' %}active{% endif %}">Pending</a></li>
+      <li><a href="{{ url_for('admin_view_status', status='rejected') }}" class="nav-link {% if request.endpoint == 'admin_view_status' and request.view_args.status == 'rejected' %}active{% endif %}">Rejected</a></li>
+      <li><a href="{{ url_for('admin_inbox') }}" class="nav-link {% if request.endpoint == 'admin_inbox'  %}active{% endif %}">Inbox</a></li>
       <li><a href="{{ url_for('logout') }}" class="nav-link">Logout</a></li>
     </ul>
     <div class="form-check form-switch text-white">
-      <!-- <label class="form-check-label" for="darkModeToggle">Dark Mode</label> -->
       <span class="dmLabel"><small>Dark Mode</small></span>
       <input class="form-check-input" type="checkbox" id="darkModeToggle" />
     </div>

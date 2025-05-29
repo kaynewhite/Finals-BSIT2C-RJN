@@ -1,7 +1,127 @@
-body{
-  color: #000;
+body {
+  color: #212529;
+  background-color: #f8f9fa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-.mb-4 text-capitalize{
-  color: #0000;
+/* Heading Style */
+h1.h3 {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #343a40;
+  margin-bottom: 1.5rem;
+}
+
+/* Table Styling */
+.table {
+  /* background-color: #fff; */
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.table th, .table td {
+  vertical-align: middle;
+  padding: 1rem;
+  border-color: #dee2e6;
+}
+
+.table th {
+  background-color: #e9ecef;
+  color: #495057;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* Action Buttons */
+.table .btn-sm {
+  font-size: 0.875rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+/* Premium Badge Style */
+td:nth-child(2) {
+  font-weight: 500;
+}
+
+td:nth-child(2)::before {
+  content: '';
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-right: 0.5rem;
+  border-radius: 50%;
+  background-color: #28a745 !important;
+}
+
+td:nth-child(2):contains('No')::before {
+  background-color: #6c757d !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .table th, .table td {
+    padding: 0.75rem;
+  }
+
+  h1.h3 {
+    font-size: 1.5rem;
+  }
+}
+
+.table tbody tr:hover {
+  background-color: #212121 !important;
+}
+
+/* Dark Mode */
+body.dark-mode {
+  background-color: #121212 !important;
+  color: #e0e0e0;
+}
+
+body.dark-mode h1.h3 {
+  color: #ffffff;
+}
+
+body.dark-mode .table {
+  background-color: #1e1e1e !important;
+  color: #e0e0e0;
+  box-shadow: none;
+}
+
+body.dark-mode .table th {
+  background-color: #1e1e1e !important;
+  color: #f1f1f1;
+}
+
+body.dark-mode .table td {
+  border-color: #333;
+  background-color: #1e1e1e;
+  color: #f1f1f1;
+}
+
+body.dark-mode .table tbody tr:hover {
+  background-color: #1e1e1e !important;
+}
+
+body.dark-mode .btn-info,
+body.dark-mode .btn-success,
+body.dark-mode .btn-danger {
+  color: #fff;
+  border: none;
+}
+
+body.dark-mode .btn-info {
+  background-color: #17a2b8;
+}
+
+body.dark-mode .btn-success {
+  background-color: #28a745;
+}
+
+body.dark-mode .btn-danger {
+  background-color: #dc3545;
 }

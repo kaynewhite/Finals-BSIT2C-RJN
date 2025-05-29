@@ -2,20 +2,162 @@
 
 {% block title %}View Recipe{% endblock %}
 
+{% block head %}
+<style>
+    /* Recipe View Styling */
+    .recipe-view-container {
+      max-width: 800px;
+      margin: 100px auto 50px;
+      padding: 1rem;
+    }
+
+    .recipe-card, .comment-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+      margin-bottom: 2rem;
+      transition: background 0.3s ease;
+    }
+
+    .recipe-card h2,
+    .comment-card h4 {
+      font-weight: 700;
+      color: #2E5F45;
+      margin-bottom: 1rem;
+    }
+
+    .recipe-section h5 {
+      font-weight: 600;
+      margin-top: 1rem;
+      color: #1B3B29;
+    }
+
+    .recipe-image {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 15px;
+      margin-bottom: 1rem;
+    }
+
+    .recipe-meta p {
+      margin: 0.2rem 0;
+      color: #555;
+    }
+
+    .back-btn {
+      margin-top: 1.5rem;
+      padding: 0.6rem 1.2rem;
+      font-weight: bold;
+      border-radius: 10px;
+    }
+
+    .comment-box {
+      background-color: #f8f8f8;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    }
+
+    .comment-text {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .comment-meta {
+      font-size: 0.85rem;
+      color: #888;
+      margin-top: 0.4rem;
+    }
+
+    /* Dark mode support */
+    body.dark-mode .recipe-card,
+    body.dark-mode .comment-card {
+      background-color: #1e1e1e;
+      color: #e0e0e0;
+    }
+
+    body.dark-mode .comment-box {
+      background-color: #2a2a2a;
+      color: #ccc;
+    }
+
+    body.dark-mode .comment-meta {
+      color: #888;
+    }
+
+    body.dark-mode .recipe-section h5,
+    body.dark-mode .recipe-card h2 {
+      color: #9BE7B0;
+    }
+
+    /* Fade-in animation */
+    .fade-in {
+      animation: fadeIn 0.6s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+</style>
+{% endblock %}
+
 {% block body %}
-<div class="container">
-    <h1>{{ recipe.title }}</h1>
-    <p><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
-    <p><strong>Instructions:</strong> {{ recipe.instructions }}</p>
-    <p><strong>Duration:</strong> {{ recipe.duration }} minutes</p>
-    <p><strong>Premium:</strong> {{ 'Yes' if recipe.isPremium else 'No' }}</p>
-    <p><strong>Staff ID:</strong> {{ recipe.staff_id }}</p>
-    <p><strong>Submitted On:</strong> {{ recipe.createdAt }}</p>
+<div class="container recipe-view-container">
+  <div class="recipe-card fade-in">
+    <h2 class="recipe-title">{{ recipe.title }}</h2>
 
     {% if recipe.image %}
-        <img src="{{ url_for('serve_image', filename=recipe.image) }}" class="img-fluid mt-3" alt="Recipe Image">
+    <img src="{{ url_for('serve_image', filename=recipe.image) }}" alt="Recipe Image" class="recipe-image">
     {% endif %}
 
-    <a href="{{ url_for('admin_view_status', status='pending') }}" class="btn btn-secondary mt-3">Back</a>
+    <div class="recipe-section">
+        <p><strong>Ingredients:</strong></p>
+        <ul>
+          {% for item in recipe.ingredients.split(',') %}
+            <li>{{ item.strip() }}</li>
+          {% endfor %}
+        </ul>
+
+    </div>
+
+    <div class="recipe-section">
+        <p><strong>Instructions:</strong></p>
+        <ol>
+          {% for item in recipe.instructions.split(',') %}
+            <li>{{ item.strip() }}</li>
+          {% endfor %}
+        </ol>
+
+    </div>
+
+    <div class="recipe-meta">
+      <p><strong>Duration:</strong> {{ recipe.duration }} minutes</p>
+      <p><strong>Premium:</strong> {{ 'Yes' if recipe.isPremium else 'No' }}</p>
+      <!-- <p><strong>Staff ID:</strong> {{ recipe.staff_id }}</p> -->
+      <p><strong>Submitted On:</strong> {{ recipe.createdAt }}</p>
+    </div>
+
+    <a href="{{ url_for('admin_view_status', status='pending') }}" class="btn btn-secondary back-btn">← Back to Pending</a>
+  </div>
+
+  <!-- Comments -->
+  <div class="comment-card fade-in">
+    <h4 class="mb-3">User Comments</h4>
+    {% if comments %}
+      {% for comment in comments %}
+      <div class="comment-box">
+        <p class="comment-text">{{ comment.comment }}</p>
+        <p class="comment-meta">Customer : {{ comment.name }} | {{ comment.commentedAt }}</p>
+      </div>
+      {% endfor %}
+    {% else %}
+      <p class="text-muted">No comments yet for this recipe.</p>
+    {% endif %}
+  </div>
 </div>
 {% endblock %}

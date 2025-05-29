@@ -12,7 +12,7 @@
         <img src="{{ url_for('serve_image', filename=recipe['image']) }}" alt="{{ recipe['title'] }}">
         <div class="card-info">
           <strong>{{ recipe['title'] }}</strong>
-          <small>{{ recipe['category'] }}</small>
+          <small>{{ recipe['courseType'] }}</small>
           <a href="{{ url_for('view_recipe_customer', recipe_id=recipe['id']) }}" class="button-link">View Recipe</a>
         </div>
       </div>

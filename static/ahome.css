@@ -322,7 +322,7 @@ body.dark-mode .dashboard-card {
 
 body.dark-mode .dashboard-card h3,
 body.dark-mode .dashboard-card p {
-  color: #fff;
+  color: #fff !important;
 }
 
 body.dark-mode .dashboard-card:hover {

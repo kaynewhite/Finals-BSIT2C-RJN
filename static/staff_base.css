@@ -19,6 +19,14 @@ body {
   min-height: 100vh;
 }
 
+#darkModeToggle{
+  margin-left:5px;
+}
+
+.dmLabel{
+  margin-left: 3px;
+}
+
 /* Header */
 header {
   background-color: #1B3B29;

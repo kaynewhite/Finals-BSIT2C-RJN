@@ -1,0 +1,74 @@
+.framer-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  overflow: hidden;
+  z-index: -10;
+  filter: blur(3px) brightness(0.9);
+  gap: 10px;
+  background-color: #F8F8F0;
+}
+
+.image-column {
+  overflow: hidden;
+  height: 100vh;
+
+}
+
+.image-track {
+  display: flex;
+  flex-direction: column;
+  animation: scrollInfinite 60s linear infinite;
+  will-change: transform;
+}
+
+.image-track img {
+  height: 220px;
+  width: auto;
+  object-fit: cover;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.image-track img:last-child {
+  margin-bottom: 0;
+}
+
+.framer-background .image-column:nth-child(even) .image-track {
+  animation: scrollInfiniteReverse 60s linear infinite;
+}
+
+@keyframes scrollInfinite {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes scrollInfiniteReverse {
+  0% {
+    transform: translateY(-50%);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+}
+
+.green-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  background: linear-gradient(to bottom right, rgba(27, 59, 41, 0.75), rgba(46, 95, 69, 0.5));
+  z-index: -5;
+}
